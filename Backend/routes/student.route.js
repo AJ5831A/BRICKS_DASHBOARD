@@ -1,0 +1,13 @@
+import express from 'express';
+const router = express.Router();
+import studentController from '../controllers/student.controller.js';
+import {body} from 'express-validator';
+
+router.post('/login' , [
+    body('enrollmentNumber').isLength({min:5 , max:20}).withMessage('Enrollment number must be between 5 to 20 characters long'),
+    body('password').isLength({min:6}).withMessage('Password must be at least 6 characters long')
+],
+    studentController.login
+)
+
+export default router;

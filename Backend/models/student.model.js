@@ -77,10 +77,6 @@ studentSchema.methods.comparePassword = async function(password){
     return await bcrypt.compare(password , this.password);
 }
 
-studentSchema.statics.hashPassword = async function(password){
-    return await bcrypt.hash(password , 10);
-}
-
 
 
 const studentModel = mongoose.model('student' , studentSchema);
