@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import studentController from '../controllers/student.controller.js';
+import authMiddleware from '../middleware/auth.middleware.js';
 import {body} from 'express-validator';
 
 router.post('/login' , [
@@ -9,5 +10,8 @@ router.post('/login' , [
 ],
     studentController.login
 )
+
+router.get('/profile' , authMiddleware.authStudent , studentController.getProfile);
+router.get('/logout' , authMiddleware.authStudent , studentController.logout);
 
 export default router;

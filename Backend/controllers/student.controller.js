@@ -1,6 +1,7 @@
 import studentModel from "../models/student.model.js";
 import {validationResult } from "express-validator";
 import bcrypt from 'bcrypt';
+import blacklistTokenModel from "../models/blacklistToken.model.js";
 
 const login = async(req , res) =>{
     const errors = validationResult(req);
@@ -10,7 +11,6 @@ const login = async(req , res) =>{
 
     const {enrollmentNumber , password} = req.body;
     const student = await studentModel.findOne({enrollmentNumber}).select('+password');
-    const hash = await bcrypt.hash("password123" , 10);
 
     if(!student){
         return res.status(400).json({errors:[{msg:'Invalid enrollment number or password'}]});
@@ -28,4 +28,17 @@ const login = async(req , res) =>{
     res.status(200).json({token , student});
 }
 
-export default {login};
+const getProfile = async(req , res) =>{
+    const student = req.student;
+    
+    res.status(200).json({student});
+}
+
+const logout = async(req , res) =>{
+    res.clearCookie('token');
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    await blacklistTokenModel.create({token});
+    res.status(200).json({msg:'Logged out successfully'});
+}
+
+export default {login , getProfile , logout};

@@ -1,7 +1,6 @@
 import studentModel from "../models/student.model.js";
 import jwt from "jsonwebtoken";
 import blacklistTokenModel from "../models/blacklistToken.model.js";
-
 const authStudent =  async (req , res , next) =>{
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
@@ -26,4 +25,4 @@ const authStudent =  async (req , res , next) =>{
     }
 }
 
-export default authStudent;
+export default {authStudent};
