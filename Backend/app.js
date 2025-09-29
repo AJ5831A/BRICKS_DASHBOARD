@@ -1,9 +1,9 @@
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 dotenv.config();
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 const app = express();
-const connectToDB = require('./db/db');
+import connectToDB from './db/db.js';
 
 connectToDB();
 
@@ -13,4 +13,4 @@ app.get('/' , (req , res) =>{
     res.send('Testing')
 })
 
-module.exports = app;
+export default app;
