@@ -116,7 +116,7 @@ studentSchema.methods.generateAuthToken = function(){
     return token;
 }
 
-studentSchema.methods.genrateTempToken = function(){
+studentSchema.methods.generateTempToken = function(){
     const token = jwt.sign({
         _id:this._id,
         purpose:'password_change',
@@ -133,6 +133,7 @@ studentSchema.methods.generateOTP = function(){
     const otp = Math.floor(100000 + Math.random()*900000).toString();
     this.resetPasswordOtp = otp;
     this.resetPasswordOtpExpiry = Date.now() + 15*60*1000; // 15 minutes
+    return otp;
 }
 
 studentSchema.methods.verifyOTP = function(otp){
