@@ -41,4 +41,12 @@ const logout = async(req , res) =>{
     res.status(200).json({msg:'Logged out successfully'});
 }
 
-export default {login , getProfile , logout};
+const forgotPassword = async(req , res , next) =>{
+    
+}
+
+const resetPassword = async(req , res , next) =>{
+    
+}
+
+export default {login , getProfile , logout , forgotPassword , resetPassword};

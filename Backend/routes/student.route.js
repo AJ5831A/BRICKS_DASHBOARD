@@ -13,5 +13,7 @@ router.post('/login' , [
 
 router.get('/profile' , authMiddleware.authStudent , studentController.getProfile);
 router.get('/logout' , authMiddleware.authStudent , studentController.logout);
+router.post('/forgot-password' , studentController.forgotPassword);
+router.post('/reset-password' , studentController.resetPassword);
 
 export default router;
