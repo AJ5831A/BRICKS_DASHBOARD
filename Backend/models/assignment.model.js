@@ -179,7 +179,64 @@ assignmentSchema.methods.isAccessible = function(){
     return this.isPublished && this.isActive && !this.isLocked;
 }
 
+assignmentSchema.methods.canSubmit = function(){
+    const now = Date.now();
 
+    if(!this.isAccessible()){
+        return {allowed: false , reason: 'Assignment is not accessible'};
+    }
+
+    if(this.dueDate && this.dueDate < now){
+        return {allowed: false , reason: 'Assignment is due'};
+    }
+
+    return {allowed: true};
+}
+
+assignmentSchema.methods.hasSubmitted = function(studentId){
+    return this.submissions.some(s => s.student.toString() === studentId.toString());
+}
+
+assignmentSchema.methods.getSubmission = function(studentId){
+    return this.submissions.find(s => s.student.toString() === studentId.toString());
+}
+
+assignmentSchema.methods.getSubmissionCount = function(){
+    return this.submissions.length;
+}
+
+assignmentSchema.methods.autoGrade = function(submissionId){
+    const submission = this.submissions.id(submissionId)
+
+    if(!submission){
+        return null;
+    }
+
+    let totalScore = 0
+
+    submission.answers.forEach(answer => {
+        const question = this.questions.id(answer.questionId);
+        if(!question) return;
+        
+        if(answer.answerType === 'mcq'){
+            const correctOption = question.options.findIndex(o => o.isCorrect);
+            if(answer.selectedOption === correctOption){
+                totalScore += question.points;
+            }
+        }else if(answer.answerType === 'multiple_correct'){
+            const correctOptions = question.options.map((opt , idx)=>opt.isCorrect ? idx:-1).filter(idx => idx !== -1);
+            const isCorrect = correctOptions.length === answer.selectedOptions.length && 
+                correctOptions.every(opt => answer.selectedOptions.includes(opt));
+
+            if(isCorrect){
+                totalScore += question.points;
+            }
+        }
+    });
+
+    submission.score = totalScore;
+    return totalScore;
+}
 
 const assignmentModel = mongoose.model('Assignment' , assignmentSchema);
 
