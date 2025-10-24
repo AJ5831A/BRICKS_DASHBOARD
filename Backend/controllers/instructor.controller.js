@@ -22,7 +22,7 @@ const login = async (req, res) => {
 
     const token = instructor.generateAuthToken();
     res.cookie('token' , token);
-    res.status(200).json({token , instructor});
+    return res.status(200).json({token , instructor});
 }
 
 const getProfile = async (req, res) => {
