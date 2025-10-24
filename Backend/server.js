@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 connectToDB();
 
 app.use(cors({
-    origin: "https://bricks-dashboard-frontend.onrender.com",
+    origin: "*",
     credentials: true
 }));
 app.use(express.json());
