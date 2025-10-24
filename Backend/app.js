@@ -14,7 +14,7 @@ connectToDB();
 
 app.use(cors(
     {
-        origin: "http://localhost:5173",
+        origin: "https://bricks-dashboard-frontend.onrender.com",
         credentials: true
     }
 ));
