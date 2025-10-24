@@ -95,7 +95,7 @@ const assignmentSchema = new mongoose.Schema({
     submissions: [{
         student: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Student',
+            ref: 'student',
             required: true
         },
         studentName: String,

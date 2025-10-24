@@ -4,9 +4,7 @@ import { body } from 'express-validator';
 import assignmentController from '../controllers/assignment.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
 
-// INSTRUCTOR ROUTES
 
-// Create new assignment
 router.post('/instructor/create', authMiddleware.authInstructor, [
     body('title')
         .notEmpty().withMessage('Title is required')
@@ -27,19 +25,16 @@ router.post('/instructor/create', authMiddleware.authInstructor, [
         .isInt({ min: 0 }).withMessage('Points must be a positive number')
 ], assignmentController.createAssignment);
 
-// Get all instructor's assignments
 router.get('/instructor/assignments', 
     authMiddleware.authInstructor, 
     assignmentController.getInstructorAssignments
 );
 
-// Get assignment submissions
 router.get('/instructor/assignment/:assignmentId/submissions', 
     authMiddleware.authInstructor, 
     assignmentController.getAssignmentSubmissions
 );
 
-// Update assignment
 router.put('/instructor/assignment/:assignmentId', authMiddleware.authInstructor, [
     body('title')
         .optional()
@@ -48,25 +43,21 @@ router.put('/instructor/assignment/:assignmentId', authMiddleware.authInstructor
     body('questions').optional().isArray().withMessage('Questions must be an array')
 ], assignmentController.updateAssignment);
 
-// Toggle assignment lock/unlock
 router.patch('/instructor/assignment/:assignmentId/toggle-lock', 
     authMiddleware.authInstructor, 
     assignmentController.toggleAssignmentLock
 );
 
-// Publish assignment
 router.patch('/instructor/assignment/:assignmentId/publish', 
     authMiddleware.authInstructor, 
     assignmentController.publishAssignment
 );
 
-// Delete assignment (soft delete)
 router.delete('/instructor/assignment/:assignmentId', 
     authMiddleware.authInstructor, 
     assignmentController.deleteAssignment
 );
 
-// Grade a submission
 router.post('/instructor/assignment/:assignmentId/submission/:submissionId/grade', 
     authMiddleware.authInstructor, [
     body('score')
@@ -75,15 +66,11 @@ router.post('/instructor/assignment/:assignmentId/submission/:submissionId/grade
     body('feedback').optional().isString().withMessage('Feedback must be a string')
 ], assignmentController.gradeSubmission);
 
-// STUDENT ROUTES
-
-// Get all assignments for student
 router.get('/student/assignments', 
     authMiddleware.authStudent, 
     assignmentController.getStudentAssignments
 );
 
-// Submit assignment
 router.post('/student/assignment/:assignmentId/submit', authMiddleware.authStudent, [
     body('answers')
         .notEmpty().withMessage('Answers are required')
@@ -94,9 +81,6 @@ router.post('/student/assignment/:assignmentId/submit', authMiddleware.authStude
         .withMessage('Invalid answer type')
 ], assignmentController.submitAssignment);
 
-// SHARED ROUTES (Both instructor and student can access)
-
-// Get assignment by ID
 router.get('/assignment/:assignmentId', async (req, res, next) => {
     // Try student auth first, then instructor auth
     authMiddleware.authStudent(req, res, (err) => {
