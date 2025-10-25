@@ -1,4 +1,4 @@
-# BRICKS Dashboard
+# 🎓 BRICKS Dashboard
 
 <div align="center">
 
@@ -6,9 +6,11 @@
 
 *Connecting Students, Teachers, and Administrators in the BRICKS Education Ecosystem*
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-v18+-green.svg)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen.svg)](https://www.mongodb.com/)
+[![Live Demo](https://img.shields.io/badge/Live-bricks.org.in-blue.svg)](https://bricks.org.in)
+
+[🌐 Live Platform](https://bricks.org.in) • [📖 Documentation](#-api-documentation) • [🐛 Report Issue](https://github.com/AryenMukundam/Bricks/issues) • [✨ Request Feature](https://github.com/AryenMukundam/Bricks/issues/new)
 
 </div>
 
@@ -17,8 +19,8 @@
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
-- [Why BRICKS is Different](#-why-bricks-is-different)
 - [Key Features](#-key-features)
+- [🧪 Testing Registration (Dev Mode)](#-testing-registration-dev-mode)
 - [User Journey](#-user-journey)
 - [Security Architecture](#-security-architecture)
 - [Tech Stack](#-tech-stack)
@@ -35,37 +37,12 @@
 
 The **BRICKS Dashboard** is a purpose-built, secure internal platform designed exclusively for the BRICKS education ecosystem. It serves as a centralized hub where teachers can create and manage classes, students can access learning materials and attend live sessions, and administrators can oversee the entire educational infrastructure.
 
+🌐 **Live at**: [bricks.org.in](https://bricks.org.in)
+
 Unlike public learning platforms, BRICKS Dashboard operates as a **closed system** — ensuring that only verified institutional members can access the platform, maintaining data integrity and educational quality.
 
----
 
-## Why BRICKS is Different
-
-### **No Public Registration — By Design**
-
-BRICKS Dashboard intentionally **does not have a public registration route** in production. Here's why:
-
-#### **1. Controlled Access Environment**
-- Only verified students and teachers from BRICKS partner institutions can access the system
-- Each user is mapped to specific batches, schools, and cohorts
-- No anonymous or unverified users can enter the ecosystem
-
-#### **2. Data Integrity & Security**
-- **100% authentic user base** — no fake accounts or spam
-- Accurate student-teacher-batch relationships maintained from day one
-- Reduced security vulnerabilities from public-facing registration endpoints
-
-#### **3. Institutional Accountability**
-- User accounts are created during official onboarding processes
-- Schools and institutions maintain responsibility for their user lists
-- Administrators have full visibility into who accesses the system
-
-#### **4. Seamless Integration**
-- User data is imported directly from verified school databases
-- Pre-configured batch assignments and role-based permissions
-- Students and teachers start with proper context from login one
-
-> **In Production**: User accounts (students, teachers, admins) are created by the BRICKS team during institutional onboarding. Each account is verified, mapped to specific batches/schools, and assigned appropriate roles before credentials are shared.
+>  **In Production**: User accounts (students, teachers) are created by the BRICKS team during institutional onboarding. Each account is verified, mapped to specific batches/schools, and assigned appropriate roles before credentials are shared.
 
 ---
 
@@ -84,7 +61,114 @@ BRICKS Dashboard intentionally **does not have a public registration route** in 
 - 👥 **Student Management** — View enrolled students per batch
 - 📈 **Analytics** — Track attendance and engagement metrics
 - 🔗 **Meeting Integration** — Add Zoom/Meet links for live sessions
-- **Assignments Posting** - Add batch specific assignments
+- 📋 **Assignment Posting** — Add batch-specific assignments
+
+### **For Administrators**
+- 👤 **User Management** — Create and manage student/teacher accounts
+- 🏫 **Batch Organization** — Configure classes and cohorts
+- 📊 **System Analytics** — Monitor platform usage and engagement
+- 🔒 **Access Control** — Manage permissions and roles
+
+---
+
+## 🧪 Testing Registration (Dev Mode)
+
+> ⚠️ **Important**: While BRICKS operates as a closed system in production, we've included a **registration endpoint for testing and demonstration purposes**. This allows developers, testers, and stakeholders to explore the full authentication flow.
+
+### 🚀 Quick Start: Test the Platform
+
+Want to try BRICKS Dashboard? Use our test registration endpoint to create a demo account:
+
+#### **Method 1: Using cURL**
+
+```bash
+# Create a test student account
+curl -X POST https://bricks-dashboard-backend.onrender.com/instructors/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Demo Student",
+    "email": "demo.student@test.com",
+    "password": "TestPassword123!",
+    "role": "student",
+    "batch": "Demo Batch 2024",
+    "school": "Test Academy"
+  }'
+```
+
+
+#### **Method 3: Using Postman**
+
+1. Create a new `POST` request
+2. URL: `https://bricks-dashboard-backend.onrender.com/instructors/register`
+3. Headers: `Content-Type: application/json`
+4. Body (raw JSON):
+
+```json
+{
+  "name": "Your Name",
+  "email": "your.email@test.com",
+  "password": "YourPassword123!",
+  "role": "student",
+  "batch": "Test Batch 2024",
+  "school": "Demo School"
+}
+```
+
+### 📝 Registration Request Schema
+
+| Field | Type | Required | Description | Example |
+|-------|------|----------|-------------|---------|
+| `name` | String | ✅ Yes | Full name of user | "John Doe" |
+| `email` | String | ✅ Yes | Valid email address | "john@test.com" |
+| `password` | String | ✅ Yes | Strong password (8+ chars) | "SecurePass123!" |
+| `role` | String | ✅ Yes | User role: `student` or `teacher` | "student" |
+| `batch` | String | ✅ Yes | Batch/class name | "Batch A 2024" |
+| `school` | String | ✅ Yes | School/institution name | "BRICKS Academy" |
+
+### ✅ Expected Response
+
+**Success (201 Created):**
+```json
+{
+  "success": true,
+  "message": "User registered successfully",
+  "user": {
+    "id": "60d5ec49f1b2c8b1f8c4e123",
+    "name": "Demo Student",
+    "email": "demo.student@test.com",
+    "role": "student",
+    "batch": "Demo Batch 2024",
+    "school": "Test Academy"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Error (400 Bad Request):**
+```json
+{
+  "success": false,
+  "error": "Email already registered"
+}
+```
+
+### 🔄 After Registration
+
+Once you've created a test account:
+
+1. **Login** at [bricks.org.in/login](https://bricks.org.in/login)
+2. Use the email and password you registered with
+3. Complete the **first-time login flow**:
+   - Verify OTP sent to your email
+   - Set a new secure password
+4. Access your personalized dashboard
+
+### ⚠️ Test Account Guidelines
+
+- **Use disposable emails** for testing (e.g., `test@example.com`)
+- Test accounts are **periodically cleaned** from the database
+- Do **not use real personal information** for test accounts
+- This endpoint is **disabled in strict production mode**
 
 ---
 
@@ -186,16 +270,17 @@ Teachers have a straightforward experience focused on content delivery:
 
 ### **Key Security Features**
 
-- **JWT-Based Authentication** — Stateless, scalable token system
-- **OTP Email Verification** — Powered by Hostinger SMTP
-- **Role-Based Access Control (RBAC)** — Students, teachers, and admins have distinct permissions
-- **Password Encryption** — bcrypt hashing for all user passwords
-- **Secure Session Management** — Token expiration and refresh mechanisms
-- **API Rate Limiting** — Protection against brute-force attacks
+- ✅ **JWT-Based Authentication** — Stateless, scalable token system
+- ✅ **OTP Email Verification** — Powered by Hostinger SMTP
+- ✅ **Role-Based Access Control (RBAC)** — Students, teachers, and admins have distinct permissions
+- ✅ **Password Encryption** — bcrypt hashing for all user passwords
+- ✅ **Secure Session Management** — Token expiration and refresh mechanisms
+- ✅ **API Rate Limiting** — Protection against brute-force attacks
+- ✅ **Input Validation** — Sanitized user inputs to prevent injection attacks
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
 ### **Backend**
 - **Runtime**: Node.js (v18+)
@@ -210,11 +295,13 @@ Teachers have a straightforward experience focused on content delivery:
 - **Styling**: Tailwind CSS / Custom CSS
 - **HTTP Client**: Axios
 - **Routing**: React Router
+- **State Management**: React Context API
 
 ### **DevOps & Tools**
 - **Version Control**: Git & GitHub
 - **Environment Management**: dotenv
 - **API Testing**: Postman / Thunder Client
+- **Deployment**: [Your hosting service]
 
 ---
 
@@ -229,8 +316,8 @@ Teachers have a straightforward experience focused on content delivery:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/AJ5831A/BRICKS_DASHBOARD.git
-   cd BRICKS_DASHBOARD
+   git clone https://github.com/AryenMukundam/Bricks.git
+   cd Bricks
    ```
 
 2. **Install Dependencies**
@@ -256,6 +343,7 @@ Teachers have a straightforward experience focused on content delivery:
    EMAIL_USER=your_email@domain.com
    EMAIL_PASS=your_email_password
    CLIENT_URL=http://localhost:3000
+   NODE_ENV=development
    ```
 
 4. **Start Development Servers**
@@ -273,37 +361,6 @@ Teachers have a straightforward experience focused on content delivery:
 
 ---
 
-## 📡 API Documentation
-
-### **Authentication Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/auth/login` | User login | No |
-| POST | `/api/auth/verify-otp` | Verify first login OTP | Temp Token |
-| POST | `/api/auth/change-password` | Set new password | Temp Token |
-| POST | `/api/auth/register` | *(Dev Only)* Create test account | No |
-
-### **Class Management Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/classes` | Get all classes | Yes (Student/Teacher) |
-| POST | `/api/classes` | Create new class | Yes (Teacher) |
-| GET | `/api/classes/:id` | Get class details | Yes |
-| PUT | `/api/classes/:id` | Update class | Yes (Teacher) |
-| DELETE | `/api/classes/:id` | Delete class | Yes (Teacher) |
-
-### **User Management Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/users/profile` | Get user profile | Yes |
-| PUT | `/api/users/profile` | Update profile | Yes |
-| GET | `/api/users/students` | Get all students | Yes (Admin/Teacher) |
-
----
-
 ## ⚙️ Environment Variables
 
 ### **Required Variables**
@@ -315,37 +372,14 @@ Teachers have a straightforward experience focused on content delivery:
 | `JWT_SECRET` | Secret key for JWT signing | `your_super_secret_key_here` |
 | `EMAIL_HOST` | SMTP server host | `smtp.hostinger.com` |
 | `EMAIL_PORT` | SMTP server port | `465` |
-| `EMAIL_USER` | Email account for sending OTPs | `noreply@bricks.edu` |
+| `EMAIL_USER` | Email account for sending OTPs | `noreply@bricks.org.in` |
 | `EMAIL_PASS` | Email account password | `secure_password` |
 | `CLIENT_URL` | Frontend URL for CORS | `http://localhost:3000` |
+| `NODE_ENV` | Environment mode | `development` or `production` |
 
 ---
 
 ## 🧪 Development & Testing
-
-### **Testing the Registration Route**
-
-For **development and QA purposes only**, BRICKS includes a temporary `/register` endpoint that allows developers to:
-
-- Quickly create dummy student and teacher accounts
-- Test the full authentication flow (login → OTP → password change)
-- Validate email integration and token generation
-- Test role-based access control without manual database insertion
-
-**Example Test Account Creation**:
-```bash
-curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Test Student",
-    "email": "test.student@bricks.edu",
-    "role": "student",
-    "batch": "Batch A",
-    "school": "BRICKS Academy"
-  }'
-```
-
-> ⚠️ **Important**: This route is disabled in production. All production accounts are created through verified institutional onboarding processes.
 
 ### **Running Tests**
 
@@ -357,7 +391,28 @@ npm test
 # Frontend tests
 cd frontend
 npm test
+
+# Run all tests
+npm run test:all
 ```
+
+### **Test Coverage**
+
+- ✅ Authentication flow (login, OTP, password change)
+- ✅ Class creation and management
+- ✅ User role permissions
+- ✅ API endpoint validation
+- ✅ Database operations
+
+### **Manual Testing Checklist**
+
+- [ ] Register a test student account
+- [ ] Register a test teacher account
+- [ ] Complete first-time login flow
+- [ ] Create a class as teacher
+- [ ] View class as student
+- [ ] Upload materials
+- [ ] Test email notifications
 
 ---
 
@@ -368,30 +423,36 @@ npm test
 - [x] First-time login flow with OTP
 - [x] Basic class creation and viewing
 - [x] Student dashboard
+- [x] Test registration endpoint
 
 ### **Phase 2: Enhanced Features** 🚧
 - [ ] Assignment submission system
 - [ ] In-app notifications
-- [ ] Mobile-responsive design
+- [ ] Mobile-responsive design improvements
 - [ ] Attendance tracking
+- [ ] Real-time class chat
 
 ### **Phase 3: Advanced Analytics** 📊
 - [ ] Student performance metrics
 - [ ] Teacher analytics dashboard
 - [ ] Automated reporting
 - [ ] Data export capabilities
+- [ ] Progress visualization
 
 ### **Phase 4: Integrations** 🔗
 - [ ] Zoom API integration
 - [ ] Calendar sync (Google/Outlook)
 - [ ] Payment gateway for courses
 - [ ] Certificate generation
+- [ ] LMS tool integrations
 
 ---
 
 ## 🤝 Contributing
 
-BRICKS Dashboard is an internal project maintained by the BRICKS development team. If you're part of the team:
+BRICKS Dashboard is maintained by the BRICKS development team. We welcome contributions from team members and the community!
+
+### **How to Contribute**
 
 1. **Fork** the repository
 2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
@@ -400,10 +461,19 @@ BRICKS Dashboard is an internal project maintained by the BRICKS development tea
 5. **Open** a Pull Request
 
 ### **Code Standards**
-- Follow existing code formatting
+- Follow existing code formatting (ESLint/Prettier)
 - Write descriptive commit messages
 - Add comments for complex logic
 - Update documentation for new features
+- Write tests for new functionality
+
+### **Reporting Issues**
+
+Found a bug? Have a feature request? Open an issue on [GitHub Issues](https://github.com/AryenMukundam/Bricks/issues) with:
+- Clear description of the problem
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots (if applicable)
 
 ---
 
@@ -415,12 +485,15 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📞 Contact & Support
 
-**Project Maintainer**: BRICKS Development Team
+**Project Maintainers**: BRICKS Development Team
 
 For questions, issues, or feature requests:
-- 📧 Email: aryen@bricks.org.in || aryan@bricks.org.in
-- 🐛 Issues: [GitHub Issues](https://github.com/AJ5831A/BRICKS_DASHBOARD/issues)
-- 📚 Documentation: [Wiki](https://github.com/AJ5831A/BRICKS_DASHBOARD/wiki)
+- 📧 **Email**: aryen@bricks.org.in | aryan@bricks.org.in
+- 🌐 **Website**: [bricks.org.in](https://bricks.org.in)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/AJ5831A/BRICKS_DASHBOARD/issues)
+- 📚 **Documentation**: [Wiki](https://github.com/AJ5831A/BRICKS_DASHBOARD/wiki)
+
+---
 
 ---
 
@@ -429,5 +502,7 @@ For questions, issues, or feature requests:
 **Built with ❤️ by the BRICKS Team**
 
 *Empowering Education Through Technology*
+
+[⭐ Star this repo](https://github.com/AryenMukundam/Bricks) • [🍴 Fork it](https://github.com/AryenMukundam/Bricks/fork) • [📢 Share it](https://twitter.com/intent/tweet?text=Check%20out%20BRICKS%20Dashboard%20-%20A%20secure%20learning%20management%20system&url=https://github.com/AryenMukundam/Bricks)
 
 </div>
